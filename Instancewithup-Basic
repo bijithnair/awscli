@@ -1,0 +1,25 @@
+** Pull the details based on IP-Address**
+
+
+Pull the ip’s based on single or multiple ip’s as input
+
+
+Ipaddr="$1"
+
+aws ec2 describe-instances --query 'Reservations[*].Instances[*].{Name:Tags[?Key==`Name`]|[0].Value,InstanceID:InstanceId,AZ:Placement.AvailabilityZone,InstanceState:State.Name,Instancetype:InstanceType,SubnetID:SubnetId,VPCId:VpcId,PrivateIP:PrivateIpAddress}' --filters "Name=private-ip-address,Values=$Ipaddr" --output table
+
+———————————
+
+Pull ip’s based on a file with list of ip’s
+
+Ipaddr=$(cat "$1")
+echo "AvailabilityZone InstanceID InstanceState InstanceType Hostname SubnetID VpcID PrivateIP"
+
+for privips in $Ipaddr; do aws ec2 describe-instances --query 'Reservations[*].Instances[*].{Name:Tags[?Key==`Name`]|[0].Value,InstanceID:InstanceId,AZ:Placement.AvailabilityZone,InstanceState:State.Name,Instancetype:InstanceType,SubnetID:SubnetId,VPCId:VpcId,privateip:PrivateIpAddress}' --filters "Name=private-ip-address,Values=$privips" --output text; done
+
+——————————
+
+Ipaddr=$(cat "$1")
+
+
+for privips in $Ipaddr; do aws ec2 describe-instances --query 'Reservations[*].Instances[*].{Name:Tags[?Key==`Name`]|[0].Value,InstanceID:InstanceId,AZ:Placement.AvailabilityZone,InstanceState:State.Name,Instancetype:InstanceType,SubnetID:SubnetId,VPCId:VpcId,privateip:PrivateIpAddress}' --filters "Name=private-ip-address,Values=$privips" --output table; done
