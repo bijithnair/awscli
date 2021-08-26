@@ -1,16 +1,9 @@
 #!/bin/bash
-  
-Ipaddr=$(cat "$1")
 
-echo "Hostname;InstanceID;InstanceState;InstanceType;SubnetID;VpcID;AvailabilityZone;PrivateIP"
+Ipaddr=$(cat "$1")
+  
+echo "Hostname;InstanceID;InstanceState;InstanceType;SubnetID;VpcID;AvailabilityZone;”PrivateIP
 for privips in $Ipaddr;
-do hostname=`aws ec2 describe-instances --query "Reservations[*].Instances[*].[Tags[?Key== 'Name']| [0].Value]" --filters "Name=private-ip-address,Values=$privips" --output text` && instanceid=`a
-ws ec2 describe-instances --query 'Reservations[*].Instances[*].{Instance:InstanceId}' --filters "Name=private-ip-address,Values=$privips" --output text` && instancestate=`aws ec2 describe-instan
-ces --query 'Reservations[*].Instances[*].{Instancestate:State.Name}' --filters "Name=private-ip-address,Values=$privips" --output text` && instancetype=`aws ec2 describe-instances --query 'Reser
-vations[*].Instances[*].{Instancestype:InstanceType}' --filters "Name=private-ip-address,Values=$privips" --output text` && subnetid=`aws ec2 describe-instances --query 'Reservations[*].Instances
-[*].{SubnetID:SubnetId}' --filters "Name=private-ip-address,Values=$privips" --output text` && vpcid=`aws ec2 describe-instances --query 'Reservations[*].Instances[*].{VPCId:VpcId}' --filters "Na
-me=private-ip-address,Values=$privips" --output text` && availabilityzone=`aws ec2 describe-instances --query 'Reservations[*].Instances[*].{AZ:Placement.AvailabilityZone}' --filters "Name=privat
-e-ip-address,Values=$privips" --output text` && privateip=`aws ec2 describe-instances --query 'Reservations[*].Instances[*].{privateip:PrivateIpAddress}' --filters "Name=private-ip-address,Values
-=$privips" --output text`
-        echo -e "$hostname;$instanceid;$instancestate;$instancetype;$subnetid;$vpcid;$availabilityzone;$privateip"
+do hostname=`aws ec2 describe-instances --query "Reservations[*].Instances[*].[Tags[?Key== 'Name']| [0].Value]" --filters "Name=private-ip-address,Values=$privips" --output text` && instanceid=`aws ec2 describe-instances --query 'Reservations[*].Instances[*].{Instance:InstanceId}' --filters "Name=private-ip-address,Values=$privips" --output text` && instancestate=`aws ec2 describe-instances --query 'Reservations[*].Instances[*].{Instancestate:State.Name}' --filters "Name=private-ip-address,Values=$privips" --output text` && instancetype=`aws ec2 describe-instances --query 'Reservations[*].Instances[*].{Instancestype:InstanceType}' --filters "Name=private-ip-address,Values=$privips" --output text` && subnetid=`aws ec2 describe-instances --query 'Reservations[*].Instances[*].{SubnetID:SubnetId}' --filters "Name=private-ip-address,Values=$privips" --output text` && vpcid=`aws ec2 describe-instances --query 'Reservations[*].Instances[*].{VPCId:VpcId}' --filters "Name=private-ip-address,Values=$privips" --output text` && availabilityzone=`aws ec2 describe-instances --query 'Reservations[*].Instances[*].{AZ:Placement.AvailabilityZone}' --filters "Name=private-ip-address,Values=$privips" --output text` && privateip=`aws ec2 describe-instances --query 'Reservations[*].Instances[*].{privateip:PrivateIpAddress}' --filters "Name=private-ip-address,Values=$privips" --output text`
+echo -e "$hostname;$instanceid;$instancestate;$instancetype;$subnetid;$vpcid;$availabilityzone;$privateip”
 done
